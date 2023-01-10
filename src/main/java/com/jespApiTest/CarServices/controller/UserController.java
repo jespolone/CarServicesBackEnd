@@ -31,24 +31,29 @@ public class UserController{
         return userService.getUsers();
     }
 
-    //@PreAuthorize("hasAnyAuthority('HR')")
+
     @PostMapping("user/create")
     @ResponseStatus(HttpStatus.CREATED)
     public void createUser(@RequestBody User user) throws InternalServerErrorException {
         userService.createUser(user);
     }
     //@PreAuthorize("hasAnyAuthority('ADMIN')")
-    @PostMapping("user/{id}/password")
+//    @PostMapping("user/{id}/password")
+//    @ResponseStatus(HttpStatus.OK)
+//    public void cambioPasswordOld(@RequestBody ChangePasswordRequestModel changePasswordRequestModel, @PathVariable("id") Long id) throws InternalServerErrorException {
+//        userService.cambioPassword(changePasswordRequestModel, id);
+//    }
+
+    @PostMapping("user/change-password")
     @ResponseStatus(HttpStatus.OK)
-    public void cambioPassword(@RequestBody ChangePasswordRequestModel changePasswordRequestModel, @PathVariable("id") Long id) throws InternalServerErrorException {
-        userService.cambioPassword(changePasswordRequestModel, id);
-        log.info("Nuova password" + changePasswordRequestModel.getNewPassword() );
+    public void cambioPassword(@RequestBody ChangePasswordRequestModel changePasswordRequestModel) throws InternalServerErrorException {
+        log.info("cambio password...");
+        userService.cambioPassword(changePasswordRequestModel);
     }
 
     @GetMapping("user/activate/{username}/{activationCode}")
-    public void attivaUser(@PathVariable("username") String username, @PathVariable("activationCode") String activationCode) throws InternalServerErrorException {
-        userService.attivaUser(username, Integer.parseInt(activationCode));
-        log.info(("username: " + username + " activationCode: " + activationCode));
+    public String attivaUser(@PathVariable("username") String username, @PathVariable("activationCode") String activationCode) throws InternalServerErrorException {
+        return userService.attivaUser(username, Integer.parseInt(activationCode));
     }
 
 }

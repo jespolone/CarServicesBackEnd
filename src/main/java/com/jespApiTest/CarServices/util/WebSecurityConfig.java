@@ -13,7 +13,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
@@ -57,7 +56,7 @@ public class WebSecurityConfig{
         http.csrf().disable().authorizeHttpRequests((auth) ->
                 {
                     try {//,"/user/create"
-                        auth.antMatchers("/authenticate","/user/create","/user/activate/**").permitAll()
+                        auth.antMatchers("/auth/**","/user/create","/user/activate/**").permitAll()
                                 .anyRequest().authenticated()
                                 .and().exceptionHandling().authenticationEntryPoint(jwtAuthenticationEntryPoint)
                                 .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);

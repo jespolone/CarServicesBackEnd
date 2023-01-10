@@ -58,13 +58,13 @@ public class UserService {
 
             Access accessoUtente = new Access();
             accessoUtente.setUsername(user.getUsername());
-            System.out.println(user.getPassword());
             accessoUtente.setPassword(encodePassword(user.getPassword()));
 
 
             accessoRepository.save(accessoUtente);
             log.debug("Dati di accesso aggiunti");
             user.setIsactive(0);
+            user.setPassword("");
             User nuovoUtente = userRepository.save(user);
             int activationCode = (int)(Math.random() * (999999 - 100000 + 1) + 100000);
             userRepository.setCode(nuovoUtente.getUsername(),activationCode);
@@ -72,10 +72,8 @@ public class UserService {
 
             log.debug("Invio email al nuovo utente {}", nuovoUtente.getId());
             EmailConfiguration email = new EmailConfiguration();
-            //String activationLink = "localhost:8080/user/activate/" + user.getUsername() + "/" + user.getCode();
             String activationLink = "<a href=\"" + "http://www.localhost:8080/user/activate/" + user.getUsername() + "/" + activationCode +"\">clicca qui</a>";
             email.setBody("<p1>Benvenuto " + user.getNome() +", per attivare l'account </p1>" + activationLink +".");
-            //email.setBody("<p1>Benvenuto ");
             email.setSubject("Car Services attivazione utente");
             email.setTo(user.getEmail());
             email.setUsername(user.getUsername());
@@ -85,44 +83,53 @@ public class UserService {
             log.debug("Email al nuovo utente {} inviata", nuovoUtente.getId());
 
         } catch (Exception exception) {
-            throw new InternalServerErrorException(exception);
+            throw new InternalServerErrorException(exception.getMessage());
         }
     }
 
-    public void cambioPassword(ChangePasswordRequestModel changePasswordRequestModel, Long id) throws InternalServerErrorException, ChangePasswordException {
+    public void cambioPassword(ChangePasswordRequestModel changePasswordRequestModel) throws InternalServerErrorException, ChangePasswordException {
         try {
             UserDetails user = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+            log.info(user.toString());
             if (checkPassword(changePasswordRequestModel.getOldPassword(), user.getPassword())) {
                 accessoRepository.changePassword(user.getUsername(), encodePassword(changePasswordRequestModel.getNewPassword()));
             }
-            else {
-                throw new ChangePasswordException("Le password non coincidono");
-            }
-            log.info("L'utente {} ha effettuato il cambio password con successo", id);
+            else throw new ChangePasswordException("Le password non coincidono");
+
+            log.info("Lutente {} ha effettuato il cambio password con successo", user.getUsername());
         } catch (Exception exception) {
             throw new InternalServerErrorException(exception);
         }
     }
 
-    public void attivaUser(String username, int activationCode) throws InternalServerErrorException {
+    public String attivaUser(String username, int activationCode) throws InternalServerErrorException {
         try{
             User user = userRepository.findByUsername(username);
             if(activationCode == user.getCode()){
                 userRepository.setActive(username,1);
+                return "<!DOCTYPE html>\n" +
+                        "<html>\n" +
+                        "   <head>\n" +
+                        "      <title>Account Confirmed</title>\n" +
+                        "      <meta http-equiv = \"refresh\" content = \"5; url = http://localhost:4200/login\" />\n" +
+                        "   </head>\n" +
+                        "   <body>\n" +
+                        "      <h1>Account Confirmed!</h1>\n" +
+                        "      <p>You will be redirect in 5 seconds</p>\n" +
+                        "   </body>\n" +
+                        "</html>";
             }
-            else {
-                throw new InternalServerErrorException("codice errato");
-            }
+            else throw new InternalServerErrorException("codice errato");
+
         } catch (Exception exception) {
             throw new InternalServerErrorException(exception);
+
         }
     }
 
     public String encodePassword(String password) {
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-        String encPassword = encoder.encode(password);
-        System.out.println("eccoci qua" + encPassword);
-        return encPassword;
+        return encoder.encode(password);
     }
 
     public boolean checkPassword(String rawPassword, String encodedPassword) {

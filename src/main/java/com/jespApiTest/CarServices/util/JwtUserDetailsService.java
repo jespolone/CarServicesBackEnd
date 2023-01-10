@@ -35,8 +35,7 @@ public class JwtUserDetailsService implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         try{
             Access accessoUtente = accessRepository.findByUsername(username);
-            User returnUser = new User(accessoUtente.getUsername() , accessoUtente.getPassword(), getAuthorities(username));
-            return returnUser;
+            return new User(accessoUtente.getUsername() , accessoUtente.getPassword(), getAuthorities(username));
         }catch (Exception ex){
             throw new UsernameNotFoundException("User not found with username: " + username);
         }
@@ -47,7 +46,6 @@ public class JwtUserDetailsService implements UserDetailsService {
         List<GrantedAuthority> authorities = new ArrayList<>();
         com.jespApiTest.CarServices.models.User user = userRepository.findByUsername(username);
         authorities.add(new SimpleGrantedAuthority(checkGrant(user.getIdRuolo())));
-        System.out.println("Varie autorita': " + authorities);
         return authorities;
     }
 

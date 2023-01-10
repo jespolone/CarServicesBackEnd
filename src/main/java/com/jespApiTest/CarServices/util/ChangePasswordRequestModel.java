@@ -14,4 +14,5 @@ public class ChangePasswordRequestModel {
     private String oldPassword;
     @ToString.Exclude
     private String newPassword;
+    private String username;
 }

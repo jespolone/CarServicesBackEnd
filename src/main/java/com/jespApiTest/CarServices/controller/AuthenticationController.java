@@ -25,10 +25,8 @@ public class    AuthenticationController {
     @Autowired
     AuthenticationService authenticationService;
 
-    @PostMapping(value = "/authenticate")
+    @PostMapping(value = "/auth/signin")
     public ResponseEntity<?> createAuthenticationToken(@RequestBody JwtRequest authenticationRequest) throws UnauthorizedException, InternalServerErrorException {
-        System.out.println("questo va");
-        System.out.println(authenticationRequest);
         return authenticationService.createAuthenticationToken(authenticationRequest);
     }
 }
