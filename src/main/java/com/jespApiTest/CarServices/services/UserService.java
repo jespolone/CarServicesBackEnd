@@ -102,6 +102,25 @@ public class UserService {
         }
     }
 
+    public void changeUserRole(User user){
+        try {
+            if(user.getIdRuolo() == 2 || user.getIdRuolo() == 3) {
+                userRepository.setRole(user.getUsername(), user.getIdRuolo());
+            }
+
+        } catch (Exception exception) {
+            throw new InternalServerErrorException(exception);
+        }
+    }
+
+    public void changeUserActive(User user){
+        try {
+            userRepository.setActive(user.getUsername(), user.getIdRuolo()==1 ? 0 : 1);
+        } catch (Exception exception) {
+            throw new InternalServerErrorException(exception);
+        }
+    }
+
     public String attivaUser(String username, int activationCode) throws InternalServerErrorException {
         try{
             User user = userRepository.findByUsername(username);

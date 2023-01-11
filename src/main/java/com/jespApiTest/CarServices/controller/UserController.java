@@ -31,6 +31,19 @@ public class UserController{
         return userService.getUsers();
     }
 
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
+    @PostMapping("user/role-update")
+    @ResponseStatus(HttpStatus.OK)
+    public void changeUserRole(@RequestBody User user)throws InternalServerErrorException{
+        userService.changeUserRole(user);
+    }
+
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
+    @PostMapping("user/active-update")
+    @ResponseStatus(HttpStatus.OK)
+    public void changeUserActive(@RequestBody User user)throws InternalServerErrorException{
+        userService.changeUserActive(user);
+    }
 
     @PostMapping("user/create")
     @ResponseStatus(HttpStatus.CREATED)
