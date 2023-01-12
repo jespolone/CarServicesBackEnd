@@ -5,11 +5,10 @@ import com.jespApiTest.CarServices.exception.UnauthorizedException;
 import com.jespApiTest.CarServices.models.JwtRequest;
 import com.jespApiTest.CarServices.services.AuthenticationService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  *
@@ -26,7 +25,14 @@ public class    AuthenticationController {
     AuthenticationService authenticationService;
 
     @PostMapping(value = "/auth/signin")
-    public ResponseEntity<?> createAuthenticationToken(@RequestBody JwtRequest authenticationRequest) throws UnauthorizedException, InternalServerErrorException {
+    public ResponseEntity<?> createAuthenticationToken(@RequestBody JwtRequest authenticationRequest) throws UnauthorizedException, InternalServerErrorException{
         return authenticationService.createAuthenticationToken(authenticationRequest);
+    }
+
+    @ResponseBody
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(UnauthorizedException.class)
+    public String handleHttpMediaTypeNotAcceptableException() {
+        return "acceptable MIME type:" + MediaType.APPLICATION_JSON_VALUE;
     }
 }

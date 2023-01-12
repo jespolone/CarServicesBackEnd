@@ -59,6 +59,10 @@ public class AuthenticationService {
         log.info("Inizio autenticazione");
 
         try {
+            //Check user is registered
+            if(userRepository.findByUsername(username) == null){
+                throw new UnauthorizedException("Utente non registrato");
+            }
             //Check user is active
             if(userRepository.getIsActive(username) == 0){
                 log.info("User inattivo");
