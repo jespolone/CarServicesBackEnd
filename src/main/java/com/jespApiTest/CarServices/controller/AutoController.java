@@ -1,7 +1,5 @@
 package com.jespApiTest.CarServices.controller;
-
 import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -11,7 +9,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
-
 import com.jespApiTest.CarServices.models.Auto;
 import com.jespApiTest.CarServices.services.impl.AutoServiceImple;
 
@@ -31,21 +28,19 @@ public class AutoController {
 	//@PreAuthorize("hasAnyAuthority('ADMIN') || hasAnyAuthority('SERVICE')")
 	@GetMapping("auto/all")
 	@ResponseStatus(HttpStatus.OK)
-	public List<Auto> getAutoList(){
-		return service.getListaAuto();
+	public List<Auto> getUserAuto(){
+		return service.getUserAuto();
 	}
 	
-	@GetMapping("auto/{id}")
-	@ResponseStatus(HttpStatus.OK)
-	public Auto getAuto(@PathVariable("id") int idAuto) {
-		return service.getAutoRep(idAuto);
-	}
+//	@GetMapping("auto/{id}")
+//	@ResponseStatus(HttpStatus.OK)
+//	public Auto getAuto(@PathVariable("id") int idAuto) {
+//		return service.getAutoRep(idAuto);
+//	}
 	
 	@PostMapping("auto/save")
 	@ResponseStatus(HttpStatus.CREATED)
-	public void saveAuto(@RequestBody Auto auto) {
-		service.saveAuto(auto);
-	}
+	public Auto saveAuto(@RequestBody Auto auto) { return service.saveAuto(auto); }
 
 
 	//@PreAuthorize("hasAnyAuthority('ADMIN')")

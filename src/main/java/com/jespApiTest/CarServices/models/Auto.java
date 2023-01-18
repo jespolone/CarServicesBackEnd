@@ -1,23 +1,28 @@
 package com.jespApiTest.CarServices.models;
+//
+//import javax.persistence.Column;
+//import javax.persistence.Entity;
+//import javax.persistence.GeneratedValue;
+//import javax.persistence.Id;
+//import javax.persistence.Table;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
-
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
-
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import javax.persistence.*;
+import java.io.Serializable;
 
 @Data
 @Entity
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
+@Builder
+@EqualsAndHashCode
+@JsonIgnoreProperties(ignoreUnknown = true)
 @Table(name="auto")
-public class Auto {
+public class Auto implements Serializable{
+
+	private static final long serialVersionUID = 5116378874529338768L;
 	@Id
 	@GeneratedValue(generator="increment")
     @GenericGenerator(name="increment", strategy = "increment")
@@ -38,4 +43,7 @@ public class Auto {
 	
 	@Column(name="anno")
 	private int anno;
+
+	@Column(name="proprietario")
+	private long idProprietario;
 }

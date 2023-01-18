@@ -6,14 +6,11 @@ import com.jespApiTest.CarServices.exception.InternalServerErrorException;
 import com.jespApiTest.CarServices.models.Auto;
 
 public interface AutoServiceInt {
-	public Auto getAutoVuota();
-	public void saveAuto(Auto auto)throws InternalServerErrorException;
-	public void deleteAuto(int id) throws InternalServerErrorException;
-	public Auto getAuto(int id);
-	public List<Auto> setAuto(Auto auto);
-	public List<Auto> getListaAuto();
+	Auto saveAuto(Auto auto)throws InternalServerErrorException;
+	void deleteAuto(int id) throws InternalServerErrorException;
+	//public Auto getAuto(int id);
+	//public List<Auto> setAuto(Auto auto);
+	List<Auto> getUserAuto();
 	//private List<Auto> generateListaAuto();
 
-    interface UserService {
-    }
 }

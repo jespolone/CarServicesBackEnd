@@ -1,5 +1,6 @@
 package com.jespApiTest.CarServices.controller;
 
+import com.jespApiTest.CarServices.exception.InactiveUserException;
 import com.jespApiTest.CarServices.exception.InternalServerErrorException;
 import com.jespApiTest.CarServices.exception.UnauthorizedException;
 import com.jespApiTest.CarServices.models.JwtRequest;
@@ -25,14 +26,21 @@ public class    AuthenticationController {
     AuthenticationService authenticationService;
 
     @PostMapping(value = "/auth/signin")
-    public ResponseEntity<?> createAuthenticationToken(@RequestBody JwtRequest authenticationRequest) throws UnauthorizedException, InternalServerErrorException{
+    public ResponseEntity<?> createAuthenticationToken(@RequestBody JwtRequest authenticationRequest) throws UnauthorizedException, InactiveUserException, InternalServerErrorException{
         return authenticationService.createAuthenticationToken(authenticationRequest);
     }
 
     @ResponseBody
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(UnauthorizedException.class)
-    public String handleHttpMediaTypeNotAcceptableException() {
+    public String handleUnauthorizedException() {
+        return "acceptable MIME type:" + MediaType.APPLICATION_JSON_VALUE;
+    }
+
+    @ResponseBody
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    @ExceptionHandler(InactiveUserException.class)
+    public String handleInactiveUserException() {
         return "acceptable MIME type:" + MediaType.APPLICATION_JSON_VALUE;
     }
 }
