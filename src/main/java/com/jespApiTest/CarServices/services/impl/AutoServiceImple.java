@@ -1,5 +1,7 @@
 package com.jespApiTest.CarServices.services.impl;
 import java.util.List;
+import java.util.Optional;
+
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -31,14 +33,16 @@ public class AutoServiceImple implements AutoServiceInt{
 		}
 	}
 	
-	public void deleteAuto(int id) throws InternalServerErrorException{
+	public Auto deleteAuto(int id) throws InternalServerErrorException{
 		try {
 			UserDetails user = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-			if(autoRepository.findById(id).isPresent()) throw new InternalServerErrorException("Auto not found");
+			Optional<Auto> autoToRet = autoRepository.findById(id);
+			if(!autoToRet.isPresent()) throw new InternalServerErrorException("Auto not found");
 			if(autoRepository.findById(id).get().getIdProprietario() != userRepository.findByUsername(user.getUsername()).getId()){
 				throw new InternalServerErrorException("Auto non autorizzata");
 			}
 			autoRepository.deleteById(id);
+			return autoToRet.get();
 		}
 		catch(Exception exception){
 			throw new InternalServerErrorException(exception.getMessage());

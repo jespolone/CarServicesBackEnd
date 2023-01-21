@@ -4,7 +4,6 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.GenericGenerator;
-import java.util.Date;
 import javax.persistence.*;
 import java.sql.Timestamp;
 
@@ -28,11 +27,18 @@ public class DateModel {
     @Column(name="id")
     private int id;
 
-    @Column(name="date")
-    private Timestamp  date;
+    @Column(name="startdate")
+    private Timestamp  startdate;
     //MySQL Format: 2003-12-31 23:59:59
 
+    @Column(name="enddate")
+    private Timestamp enddate;
 
+    @Column(name="datedescription")
+    private String datedescription;
+
+    @Column(name="dayid")
+    private String dayid;
     @OneToOne
     @JoinColumn(name = "client", nullable = false)
     private User client;
@@ -40,6 +46,10 @@ public class DateModel {
     @OneToOne
     @JoinColumn(name = "mechanic", nullable = false)
     private User mechanic;
+
+    @OneToOne
+    @JoinColumn(name = "auto ", nullable = false)
+    private Auto auto;
 
 }
 

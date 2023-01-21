@@ -1,5 +1,7 @@
 package com.jespApiTest.CarServices.controller;
 import java.util.List;
+
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -20,6 +22,7 @@ import com.jespApiTest.CarServices.services.impl.AutoServiceImple;
  *
  */
 
+@Slf4j
 @RestController
 public class AutoController {
 	@Autowired
@@ -45,8 +48,8 @@ public class AutoController {
 
 	//@PreAuthorize("hasAnyAuthority('ADMIN')")
 	@DeleteMapping("autodelete/{id}")
-	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public void deleteAuto(@PathVariable("id") int idAuto){
-		service.deleteAuto(idAuto);
+	@ResponseStatus(HttpStatus.OK)
+	public Auto deleteAuto(@PathVariable("id") int idAuto){
+		return service.deleteAuto(idAuto);
 	}
 }

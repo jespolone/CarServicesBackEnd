@@ -9,6 +9,7 @@ import java.sql.Timestamp;
 import java.util.Date;
 
 public interface DateModelRepository extends CrudRepository<DateModel,Integer> {
-    @Query(value = "SELECT d FROM DateModel d WHERE d.date between  :startDate and :stopDate")
-    Iterable<DateModel> getRangeListDate(@Param("startDate") Timestamp startDate, @Param("stopDate") Timestamp stopDate);
+//    @Query(value = "SELECT d FROM DateModel d WHERE d.date between  :startDate and :stopDate")
+//    Iterable<DateModel> getRangeListDate(@Param("startDate") Timestamp startDate, @Param("stopDate") Timestamp stopDate);
+
 }

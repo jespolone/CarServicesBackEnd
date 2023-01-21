@@ -23,7 +23,32 @@ public class DateModelService {
     @Autowired
     private DateModelRepository dateModelRepository;
 
-    public Iterable<DateModel> getListDate() throws InternalServerErrorException {
+    public  Iterable<DateModel> getUserDate(int userId) throws InternalServerErrorException {
+        Iterable<DateModel> tempDateModel =  dateModelRepository.findAll();
+        for(DateModel date : tempDateModel ){
+            if(date.getClient().getId() != userId){
+                date.setAuto(null);
+                date.setDatedescription(null);
+                date.setClient(null);
+            }
+        }
+
+        return tempDateModel;
+    }
+
+    public void createDate(DateModel date) throws InternalServerErrorException{
+        final int hour = 3600000; //an hour in milliseconds
+
+        try {
+            dateModelRepository.save(date);
+        }
+
+        catch(Exception exception){
+            throw new InternalServerErrorException(exception.getMessage());
+        }
+    }
+
+   /* public Iterable<DateModel> getListDate() throws InternalServerErrorException {
         try {
             Iterable<DateModel> toRet = dateModelRepository.findAll();
 
@@ -80,4 +105,6 @@ public class DateModelService {
             throw new InternalServerErrorException(exception.getMessage());
         }
     }
+
+    */
 }
