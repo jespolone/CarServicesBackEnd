@@ -26,7 +26,7 @@ public class DateModelService {
     public  Iterable<DateModel> getUserDate(int userId) throws InternalServerErrorException {
         Iterable<DateModel> tempDateModel =  dateModelRepository.findAll();
         for(DateModel date : tempDateModel ){
-            if(date.getClient().getId() != userId){
+            if(date.getClient() != userId){
                 date.setAuto(null);
                 date.setDatedescription(null);
                 date.setClient(null);

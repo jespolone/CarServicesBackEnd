@@ -39,17 +39,17 @@ public class DateModel {
 
     @Column(name="dayid")
     private String dayid;
-    @OneToOne
+
     @JoinColumn(name = "client", nullable = false)
-    private User client;
+    private Integer client;
 
-    @OneToOne
+
     @JoinColumn(name = "mechanic", nullable = false)
-    private User mechanic;
+    private Integer mechanic;
 
-    @OneToOne
+
     @JoinColumn(name = "auto ", nullable = false)
-    private Auto auto;
+    private Integer auto;
 
 }
 

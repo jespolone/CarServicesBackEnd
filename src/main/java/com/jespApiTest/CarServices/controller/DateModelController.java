@@ -1,9 +1,11 @@
 package com.jespApiTest.CarServices.controller;
 import com.jespApiTest.CarServices.models.DateModel;
 import com.jespApiTest.CarServices.services.DateModelService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+
 
 
 /**
@@ -13,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
  * @author Elvin Iluca
  *
  */
-
+@Slf4j
 @RestController
 public class DateModelController {
 
@@ -29,6 +31,7 @@ public class DateModelController {
     @PostMapping("date/save")
     @ResponseStatus(HttpStatus.CREATED)
     public void createDate(@RequestBody DateModel date) {
+        log.info(date.toString());
         dateModelService.createDate(date);
     }
 
