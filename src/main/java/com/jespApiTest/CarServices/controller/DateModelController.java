@@ -22,16 +22,15 @@ public class DateModelController {
     @Autowired
     private DateModelService dateModelService;
 
-    @GetMapping("userdate{id}")
+    @GetMapping(value = "userdate{userId}")
     @ResponseStatus(HttpStatus.OK)
-    public Iterable<DateModel> getUserDate(@PathVariable("id") int userId){
-        return dateModelService.getUserDate(userId);
+    public Iterable<DateModel> getUserDate(@PathVariable("userId") String userId){
+        return dateModelService.getUserDate(Integer.parseInt(userId));
     }
 
     @PostMapping("date/save")
     @ResponseStatus(HttpStatus.CREATED)
     public void createDate(@RequestBody DateModel date) {
-        log.info(date.toString());
         dateModelService.createDate(date);
     }
 
