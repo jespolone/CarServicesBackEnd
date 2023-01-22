@@ -45,6 +45,14 @@ public class UserService {
         }
     }
 
+    public Iterable<User> getAllMechanical() throws InternalServerErrorException {
+        try {
+            return userRepository.getAllMechanical();
+        } catch (Exception exception) {
+            throw new InternalServerErrorException(exception);
+        }
+    }
+
     @Transactional
     public void createUser(User user) throws InternalServerErrorException {
         log.debug(user.toString());

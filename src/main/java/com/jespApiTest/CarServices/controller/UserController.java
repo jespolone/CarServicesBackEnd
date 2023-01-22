@@ -31,6 +31,12 @@ public class UserController{
         return userService.getUsers();
     }
 
+    @GetMapping("user/all-mechanical")
+    public Iterable<User> getAllMechanical() throws InternalServerErrorException {
+        log.info("user/all-mechanical");
+        return userService.getAllMechanical();
+    }
+
     @PreAuthorize("hasAnyAuthority('ADMIN')")
     @PostMapping("user/role-update")
     @ResponseStatus(HttpStatus.OK)

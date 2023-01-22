@@ -16,6 +16,9 @@ public interface UserRepository extends CrudRepository<User, Long> {
     @Query(value = "SELECT u FROM User u")
     Iterable<User> getUsers();
 
+    @Query(value = "SELECT u FROM User u WHERE u.idRuolo = 2")
+    Iterable<User> getAllMechanical();
+
     @Transactional
     @Modifying
     @Query(value = "UPDATE User u set u.code = :code WHERE u.username = :username")
