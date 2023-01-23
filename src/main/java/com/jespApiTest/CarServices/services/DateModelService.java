@@ -1,20 +1,15 @@
 package com.jespApiTest.CarServices.services;
 
 import com.jespApiTest.CarServices.exception.InternalServerErrorException;
-import com.jespApiTest.CarServices.exception.NotFoundException;
 import com.jespApiTest.CarServices.models.DateModel;
+import com.jespApiTest.CarServices.models.User;
 import com.jespApiTest.CarServices.repository.DateModelRepository;
+import com.jespApiTest.CarServices.repository.UserRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
-
-import java.sql.Date;
-import java.sql.Time;
-import java.sql.Timestamp;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.List;
 
 @Service
 @Slf4j
@@ -22,9 +17,16 @@ public class DateModelService {
 
     @Autowired
     private DateModelRepository dateModelRepository;
+    @Autowired
+    private UserRepository userRepository;
 
     public  Iterable<DateModel> getUserDate(int userId) throws InternalServerErrorException {
         Iterable<DateModel> tempDateModel =  dateModelRepository.findAll();
+        UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        User user = userRepository.findByUsername(userDetails.getUsername());
+        if(user.getIdRuolo() == 1 || user.getIdRuolo() == 2){
+            return tempDateModel;
+        }
         for(DateModel date : tempDateModel ){
             if(date.getClient() != userId){
                 date.setAuto(null);
@@ -37,12 +39,9 @@ public class DateModelService {
     }
 
     public void createDate(DateModel date) throws InternalServerErrorException{
-        final int hour = 3600000; //an hour in milliseconds
-
         try {
             dateModelRepository.save(date);
         }
-
         catch(Exception exception){
             throw new InternalServerErrorException(exception.getMessage());
         }
