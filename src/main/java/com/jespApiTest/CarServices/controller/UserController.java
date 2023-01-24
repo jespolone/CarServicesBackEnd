@@ -47,8 +47,8 @@ public class UserController{
     @PreAuthorize("hasAnyAuthority('ADMIN')")
     @PostMapping("user/active-update")
     @ResponseStatus(HttpStatus.OK)
-    public void changeUserActive(@RequestBody User user)throws InternalServerErrorException{
-        userService.changeUserActive(user);
+    public int changeUserActive(@RequestBody User user)throws InternalServerErrorException{
+        return userService.changeUserActive(user);
     }
 
     @PostMapping("user/create")

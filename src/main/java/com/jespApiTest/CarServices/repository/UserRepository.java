@@ -27,7 +27,7 @@ public interface UserRepository extends CrudRepository<User, Long> {
     @Transactional
     @Modifying
     @Query(value = "UPDATE User u set u.isactive = :isactive WHERE u.username = :username")
-    void setActive(@Param("username") String username, @Param("isactive") int isactive);
+    int setActive(@Param("username") String username, @Param("isactive") int isactive);
 
     @Query(value = "SELECT u.isactive FROM User u WHERE u.username = :username")
     int getIsActive(@Param("username") String username);

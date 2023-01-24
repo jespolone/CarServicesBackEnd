@@ -30,7 +30,7 @@ public class DateModelService {
         for(DateModel date : tempDateModel ){
             if(date.getClient() != userId){
                 date.setAuto(null);
-                date.setDatedescription(null);
+                date.setDatedescription("Occupato");
                 date.setClient(null);
             }
         }

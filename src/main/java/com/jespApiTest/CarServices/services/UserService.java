@@ -121,9 +121,9 @@ public class UserService {
         }
     }
 
-    public void changeUserActive(User user){
+    public int changeUserActive(User user){
         try {
-            userRepository.setActive(user.getUsername(), user.getIdRuolo()==1 ? 0 : 1);
+            return userRepository.setActive(user.getUsername(), user.getIsactive()==1 ? 0 : 1);
         } catch (Exception exception) {
             throw new InternalServerErrorException(exception);
         }
